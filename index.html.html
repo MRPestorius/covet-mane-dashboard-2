@@ -1,0 +1,325 @@
+
+<h2 class="sr-only">Covet & Mane weekly KPI dashboard updated through the week of May 17, 2026, with filterable revenue, product mix, funnel, and customer panels.</h2>
+<style>
+* { box-sizing: border-box; }
+.d { padding: 1rem 0; font-family: var(--font-sans); }
+.hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 10px; }
+.hdr-title { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin: 0; }
+.pbtns { display: flex; gap: 6px; }
+.pbtns button { font-size: 12px; padding: 4px 12px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-secondary); cursor: pointer; transition: all 0.15s; }
+.pbtns button.active { background: var(--color-background-secondary); color: var(--color-text-primary); border-color: var(--color-border-primary); }
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 1.25rem; }
+.kpi { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 14px 16px; }
+.kpi-lbl { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 4px; }
+.kpi-val { font-size: 21px; font-weight: 500; color: var(--color-text-primary); line-height: 1.2; }
+.kpi-sub { font-size: 12px; margin-top: 3px; }
+.up { color: #1D9E75; } .dn { color: #D85A30; } .nt { color: #888780; }
+.card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
+.card-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+.card-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+.legend { display: flex; gap: 12px; font-size: 12px; color: var(--color-text-secondary); flex-wrap: wrap; }
+.legend span { display: flex; align-items: center; gap: 5px; }
+.ldot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+.two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 1.25rem; }
+.funnel-row { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-bottom: 0.5px solid var(--color-border-tertiary); font-size: 13px; }
+.funnel-row:last-child { border-bottom: none; }
+.fl { color: var(--color-text-secondary); }
+.fv { font-weight: 500; color: var(--color-text-primary); }
+.fp { font-size: 11px; padding: 2px 7px; border-radius: var(--border-radius-md); }
+.fp-hi { background: #E1F5EE; color: #085041; }
+.fp-lo { background: #FAECE7; color: #712B13; }
+.fp-md { background: #F1EFE8; color: #444441; }
+.acq-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 0.5px solid var(--color-border-tertiary); font-size: 13px; }
+.acq-row:last-child { border-bottom: none; }
+.acq-right { text-align: right; }
+.acq-val { font-weight: 500; color: var(--color-text-primary); display: block; }
+.acq-sub { font-size: 11px; color: var(--color-text-secondary); display: block; }
+</style>
+
+<div class="d">
+<div class="hdr">
+  <p class="hdr-title">Covet & Mane — weekly metrics</p>
+  <div class="pbtns" id="main-btns">
+    <button onclick="setWindow(1,this)">This week</button>
+    <button onclick="setWindow(4,this)">4 weeks</button>
+    <button class="active" onclick="setWindow(12,this)">12 weeks</button>
+  </div>
+</div>
+
+<div class="kpi-grid">
+  <div class="kpi"><div class="kpi-lbl">Net sales</div><div class="kpi-val" id="kv0"></div><div class="kpi-sub" id="ks0"></div></div>
+  <div class="kpi"><div class="kpi-lbl">vs. goal</div><div class="kpi-val" id="kv1"></div><div class="kpi-sub" id="ks1"></div></div>
+  <div class="kpi"><div class="kpi-lbl">vs. last year</div><div class="kpi-val" id="kv2"></div><div class="kpi-sub" id="ks2"></div></div>
+  <div class="kpi"><div class="kpi-lbl">Orders (2026)</div><div class="kpi-val" id="kv3"></div><div class="kpi-sub" id="ks3"></div></div>
+  <div class="kpi"><div class="kpi-lbl">Avg order value</div><div class="kpi-val" id="kv4"></div><div class="kpi-sub" id="ks4"></div></div>
+  <div class="kpi"><div class="kpi-lbl">YTD net sales</div><div class="kpi-val" id="kv5"></div><div class="kpi-sub" id="ks5"></div></div>
+</div>
+
+<div class="card">
+  <div class="card-hdr">
+    <span class="card-title" id="rev-title">Weekly net sales — actual vs. goal vs. last year</span>
+    <div class="legend" id="rev-legend">
+      <span><span class="ldot" style="background:#3266ad;"></span>2026 actual</span>
+      <span id="leg-goal"><span class="ldot" style="background:#D4537E;border-radius:50%;"></span>2026 goal</span>
+      <span id="leg-ly"><span class="ldot" style="background:#B4B2A9;border-radius:50%;"></span>2025 actual</span>
+    </div>
+  </div>
+  <div style="position:relative;width:100%;height:220px;">
+    <canvas id="revChart" role="img" aria-label="Weekly net sales chart comparing 2026 actual to goal and prior year">Weekly sales comparison.</canvas>
+  </div>
+</div>
+
+<div class="two-col">
+  <div class="card" style="margin-bottom:0;">
+    <div class="card-hdr">
+      <span class="card-title" id="sku-title">Product mix — 2026 vs. last year</span>
+      <div class="pbtns" id="sku-btns">
+        <button onclick="setSkuWindow(1,this)">This week</button>
+        <button onclick="setSkuWindow(4,this)">4 weeks</button>
+        <button class="active" onclick="setSkuWindow(12,this)">12 weeks</button>
+      </div>
+    </div>
+    <div class="legend" style="margin-bottom:12px;">
+      <span><span class="ldot" style="background:#3266ad;"></span>2026</span>
+      <span><span class="ldot" style="background:#D3D1C7;"></span>2025 LY</span>
+    </div>
+    <div style="position:relative;width:100%;height:300px;">
+      <canvas id="skuChart" role="img" aria-label="Grouped horizontal bar chart comparing 2026 vs last year sales by product line">Product mix 2026 vs LY.</canvas>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:0;">
+    <div class="card-hdr">
+      <span class="card-title">Application funnel</span>
+      <div class="pbtns" id="funnel-btns">
+        <button onclick="setFunnelWindow(1,this)">This week</button>
+        <button onclick="setFunnelWindow(4,this)">4 weeks</button>
+        <button class="active" onclick="setFunnelWindow(12,this)">12 weeks</button>
+      </div>
+    </div>
+    <div id="funnel"></div>
+  </div>
+</div>
+
+<div style="height:16px;"></div>
+
+<div class="two-col">
+  <div class="card" style="margin-bottom:0;">
+    <div class="card-hdr"><span class="card-title">New customers added (7-day)</span></div>
+    <div style="position:relative;width:100%;height:150px;">
+      <canvas id="ncChart" role="img" aria-label="Weekly new customers added line chart through May 17">New customers per week.</canvas>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:0;">
+    <div class="card-title" style="margin-bottom:12px;">Customer orders — most recent week (May 17)</div>
+    <div id="acq-detail"></div>
+  </div>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// 19 weeks: Jan 6 → May 17
+const WEEKS = ['1/6','1/13','1/20','1/27','2/3','2/10','2/17','2/24','3/3','3/10','3/17','3/24','3/31','4/7','4/14','4/26','5/3','5/10','5/17'];
+
+const R6  = [301281,210318,224827,209888,225935,228553,245745,242497,235703,250162,259558,240379,236495,248537,230077,246562,258964,230289,222169];
+const R5  = [325314,245634,212002,226553,283765,218592,234839,284209,274267,306052,250774,271029,280631,259823,286723,312218,271889,276591,281299];
+const R4  = [325314,233937,192729,188794,246752,190080,195699,247138,228556,255043,208978,235677,233859,216519,238936,260182,221429,223708,228424];
+const R14 = [451,330,322,309,320,315,379,390,378,376,364,382,381,363,359,363,363,342,353];
+const R12 = [513,351,295,322,341,353,290,351,346,356,352,325,362,372,340,386,386,347,360];
+const R7  = [44,20,65,41,23,41,36,18,17,114,56,69,101,71,70,31,50,41,56];
+
+const R70 = [24,7,21,19,19,28,23,30,21,19,35,27,30,23,null,25,19,22,16];
+const R71 = [353,312,291,273,273,314,340,348,339,295,320,333,334,324,null,322,286,309,287];
+const R72 = [285,744,599,374,415,351,540,458,403,477,471,768,315,416,null,247,549,431,300];
+const R73 = [759,694,775,769,705,677,655,635,637,677,739,619,647,701,null,695,746,690,645];
+const R74 = [127,105,145,143,125,149,154,133,139,272,301,312,394,327,322,242,229,184,187];
+const R75 = [15,11,20,23,16,33,32,31,34,24,27,29,34,32,35,25,28,27,24];
+const R76 = [null,null,null,null,170,221,265,290,318,517,601,667,799,866,942,1037,1113,1145,1203];
+const R77 = [null,null,null,null,24,48,58,70,82,97,114,127,139,157,176,202,224,232,214];
+
+const SKUS = [
+  {name:'Coveted Weft',
+   v26:[128133,92556,101307,87318,104549,100025,105969,94784,107069,113309,104091,100528,113095,103771,98856,126929,123227,101330,100003],
+   vLY:[88725,60935,55270,53545,80525,58130,53620,66240,72325,100513,83025,90945,91788,70575,68950,100344,79605,83035,80688]},
+  {name:'Cut Point Weft',
+   v26:[116542,87058,82283,82965,76259,87205,92651,92597,84831,84954,100093,93510,84542,85857,83342,77036,79274,85784,75649],
+   vLY:[208623,134444,116839,102608,138664,107539,111387,151595,125144,134540,105264,122310,115376,109470,125295,119699,112413,100189,104080]},
+  {name:'Keratin Tip',
+   v26:[23083,14658,18475,13451,20039,15790,17763,22900,22104,23925,20004,18927,19514,25367,18623,20330,26027,25402,24136],
+   vLY:[0,0,0,0,0,0,0,0,0,0,1745,0,1910,2755,2030,9305,6100,10870,9338]},
+  {name:'Textures',
+   v26:[16820,10634,11780,19266,14130,16020,18854,21532,12449,18138,21396,16730,13319,19049,21803,10151,19248,9530,14892],
+   vLY:[16770,14540,12920,21065,17250,10905,19960,17775,21710,11525,5730,8450,14430,15740,19170,20950,9200,17310,17870]},
+  {name:'Coveted Tape',
+   v26:[11747,2439,5974,3726,5400,5044,6523,5994,3772,4878,6114,5206,2906,7312,3580,5856,6420,5578,3016],
+   vLY:[5442,13944,4434,5972,7826,6117,5944,4465,1448,2951,6856,6843,5909,8290,6294,2149,6668,6739,4687]},
+  {name:'Root Melt',
+   v26:[944,323,400,204,718,436,0,243,243,1005,248,1002,36,541,249,157,371,209,501],
+   vLY:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},
+];
+
+const FUNNEL = {
+  views:     [828,620,698,706,501,526,586,609,565,597,546,505,530,485,500,424,505,385,396],
+  starts:    [279,208,243,244,170,230,254,275,275,292,260,239,242,224,226,189,252,159,168],
+  submitted: [125,105,117,123,79,132,157,153,166,148,158,126,135,145,139,110,98,92,99],
+  approved:  [90,9,81,47,11,81,81,99,49,35,31,34,86,76,75,27,36,37,49],
+};
+
+const grd={color:'rgba(136,135,128,0.15)'};
+let revChart, ncChart, skuChart;
+
+function sum(arr){return arr.reduce((a,b)=>a+(b||0),0);}
+function lastVal(arr){for(let i=arr.length-1;i>=0;i--){if(arr[i]!==null&&arr[i]!==undefined)return arr[i];}return null;}
+function fmtK(v){return v>=1000000?'$'+(v/1000000).toFixed(2)+'M':v>=1000?'$'+(v/1000).toFixed(0)+'k':'$'+Math.round(v);}
+function fmtPct(v){return (v>=0?'+':'')+v.toFixed(1)+'%';}
+function cls(v){return v>=0?'up':'dn';}
+function setKpi(i,val,sub,c){
+  document.getElementById('kv'+i).textContent=val;
+  const e=document.getElementById('ks'+i);
+  e.textContent=sub; e.className='kpi-sub '+(c||'nt');
+}
+
+// YTD totals from file
+const YTD_ACT = sum(R6);
+const YTD_LY  = sum(R4);
+
+function renderMain(n){
+  const act=R6.slice(-n), goal=R5.slice(-n), ly=R4.slice(-n);
+  const ord26=R14.slice(-n), ord25=R12.slice(-n), nc=R7.slice(-n), labs=WEEKS.slice(-n);
+  const tA=sum(act),tG=sum(goal),tLY=sum(ly),tO=sum(ord26),tO25=sum(ord25);
+  const vsG=(tA-tG)/tG*100, vsLY=(tA-tLY)/tLY*100, aov=tA/tO, vsOrd=(tO-tO25)/tO25*100;
+  const ytdVsLY=(YTD_ACT-YTD_LY)/YTD_LY*100;
+
+  setKpi(0,fmtK(tA),n===1?'Week of May 17':n===4?'4-week total':'12-week total','nt');
+  setKpi(1,Math.round(vsG*10)/10+'%',(vsG>=0?'↑ ':'↓ ')+'$'+Math.abs(Math.round(tA-tG)).toLocaleString()+' vs goal',cls(vsG));
+  setKpi(2,fmtPct(vsLY),(vsLY>=0?'↑ ':'↓ ')+'$'+Math.abs(Math.round(tA-tLY)).toLocaleString()+' vs LY',cls(vsLY));
+  setKpi(3,tO.toLocaleString(),(vsOrd>=0?'↑ +':'↓ ')+Math.abs(Math.round(vsOrd*10)/10)+'% vs LY ('+tO25+')',cls(vsOrd));
+  setKpi(4,'$'+Math.round(aov),'Goal: $775',aov>=775?'up':'nt');
+  setKpi(5,fmtK(YTD_ACT),(ytdVsLY>=0?'↑ +':'↓ ')+Math.abs(ytdVsLY.toFixed(1))+'% vs LY',cls(ytdVsLY));
+
+  const tCfg={autoSkip:n>6,maxRotation:45,color:'#888780',font:{size:10}};
+  if(revChart) revChart.destroy();
+
+  if(n===1){
+    document.getElementById('leg-goal').innerHTML='<span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#D4537E;margin-right:5px;"></span>2026 goal';
+    document.getElementById('leg-ly').innerHTML='<span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#B4B2A9;margin-right:5px;"></span>2025 actual';
+    revChart=new Chart(document.getElementById('revChart').getContext('2d'),{
+      type:'bar',
+      data:{
+        labels:['2026 Actual','2026 Goal','2025 Actual'],
+        datasets:[{data:[act[0],goal[0],ly[0]],backgroundColor:['#3266ad','#D4537E','#B4B2A9'],borderRadius:4,barPercentage:0.5}]
+      },
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' $'+Math.round(c.raw).toLocaleString()}}},
+        scales:{x:{grid:{display:false},ticks:{color:'#888780',font:{size:12}}},
+                y:{grid:grd,border:{display:false},ticks:{color:'#888780',font:{size:11},callback:v=>'$'+(v/1000).toFixed(0)+'k'}}}}
+    });
+  } else {
+    document.getElementById('leg-goal').innerHTML='<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#D4537E;margin-right:5px;"></span>2026 goal';
+    document.getElementById('leg-ly').innerHTML='<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#B4B2A9;margin-right:5px;"></span>2025 actual';
+    revChart=new Chart(document.getElementById('revChart').getContext('2d'),{
+      data:{labels:labs,datasets:[
+        {type:'bar',label:'2026 actual',data:act,backgroundColor:'#3266ad',order:3},
+        {type:'line',label:'2026 goal',data:goal,borderColor:'#D4537E',borderDash:[4,3],borderWidth:1.5,pointRadius:0,tension:0.3,order:1},
+        {type:'line',label:'2025 actual',data:ly,borderColor:'#B4B2A9',borderDash:[2,2],borderWidth:1.5,pointRadius:0,tension:0.3,order:2},
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' $'+Math.round(c.raw).toLocaleString()}}},
+        scales:{x:{grid:{display:false},ticks:tCfg},y:{grid:grd,border:{display:false},ticks:{color:'#888780',font:{size:11},callback:v=>'$'+(v/1000).toFixed(0)+'k'}}}}
+    });
+  }
+
+  if(ncChart) ncChart.destroy();
+  ncChart=new Chart(document.getElementById('ncChart').getContext('2d'),{
+    type:'line',
+    data:{labels:labs,datasets:[{label:'New customers',data:nc,borderColor:'#1D9E75',backgroundColor:'rgba(29,158,117,0.08)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#1D9E75',tension:0.4,fill:true}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{grid:{display:false},ticks:tCfg},y:{grid:grd,border:{display:false},ticks:{color:'#888780',font:{size:11}},min:0}}}
+  });
+  renderAcq();
+}
+
+function renderSku(n){
+  const labels=SKUS.map(s=>s.name);
+  const d26=SKUS.map(s=>sum(s.v26.slice(-n)));
+  const dLY=SKUS.map(s=>sum(s.vLY.slice(-n)));
+  document.getElementById('sku-title').textContent='Product mix — '+(n===1?'this week':n===4?'last 4 weeks':'last 12 weeks')+' (2026 vs. LY)';
+  if(skuChart) skuChart.destroy();
+  skuChart=new Chart(document.getElementById('skuChart').getContext('2d'),{
+    type:'bar',
+    data:{labels,datasets:[
+      {label:'2026',data:d26,backgroundColor:'#3266ad',borderRadius:2},
+      {label:'2025 LY',data:dLY,backgroundColor:'#D3D1C7',borderRadius:2},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' $'+Math.round(c.raw).toLocaleString()}}},
+      scales:{x:{grid:grd,border:{display:false},ticks:{color:'#888780',font:{size:10},callback:v=>'$'+(v/1000).toFixed(0)+'k'}},
+              y:{grid:{display:false},ticks:{color:'#888780',font:{size:11}}}}}
+  });
+}
+
+function renderFunnel(n){
+  const views=sum(FUNNEL.views.slice(-n));
+  const starts=sum(FUNNEL.starts.slice(-n));
+  const submitted=sum(FUNNEL.submitted.slice(-n));
+  const approved=sum(FUNNEL.approved.slice(-n));
+  const startPct=Math.round(starts/views*100);
+  const subPct=Math.round(submitted/starts*100);
+  const appPct=Math.round(approved/submitted*100);
+  const overallPct=Math.round(approved/views*100);
+  document.getElementById('funnel').innerHTML=[
+    {label:'Application views',val:views.toLocaleString(),pct:null,cls:'fp-md'},
+    {label:'Starts',val:starts.toLocaleString(),pct:startPct+'% of views',cls:'fp-md'},
+    {label:'Submitted',val:submitted.toLocaleString(),pct:subPct+'% of starts',cls:'fp-md'},
+    {label:'Approved',val:approved.toLocaleString(),pct:appPct+'% of submitted',cls:appPct>=40?'fp-hi':'fp-lo'},
+    {label:'Overall approval',val:null,pct:overallPct+'% of views',cls:overallPct>=15?'fp-hi':'fp-lo'},
+  ].map(f=>`<div class="funnel-row">
+    <span class="fl">${f.label}</span>
+    <div style="display:flex;align-items:center;gap:8px;">
+      ${f.val?`<span class="fv">${f.val}</span>`:''}
+      ${f.pct?`<span class="fp ${f.cls}">${f.pct}</span>`:''}
+    </div>
+  </div>`).join('');
+}
+
+function renderAcq(){
+  const i=18; // May 17 index
+  const newOrd=R70[i]!==null?R70[i]:'—';
+  const retOrd=R71[i]!==null?R71[i]:'—';
+  const newAov=R72[i]!==null?'$'+R72[i]:'—';
+  const retAov=R73[i]!==null?'$'+R73[i]:'—';
+  const c7=R7[i], c30=R74[i], c30p=R75[i];
+  const convPct=Math.round(c30p/c30*1000)/10;
+  const ytd=lastVal(R76), ytdP=lastVal(R77);
+  document.getElementById('acq-detail').innerHTML=[
+    {label:'Customers added (7-day)',   val:c7,    sub:''},
+    {label:'New customer orders',       val:newOrd,sub:'AOV '+newAov},
+    {label:'Returning customer orders', val:retOrd,sub:'AOV '+retAov},
+    {label:'Customers added (30-day)',  val:c30,   sub:''},
+    {label:'30-day placed order',       val:c30p,  sub:convPct+'% conversion'},
+    {label:'YTD placed order',          val:ytdP,  sub:'of '+ytd+' added YTD'},
+  ].map(r=>`<div class="acq-row">
+    <span style="color:var(--color-text-secondary);font-size:13px;">${r.label}</span>
+    <div class="acq-right">
+      <span class="acq-val">${r.val}</span>
+      ${r.sub?`<span class="acq-sub">${r.sub}</span>`:''}
+    </div>
+  </div>`).join('');
+}
+
+function setWindow(n,btn){
+  document.querySelectorAll('#main-btns button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); renderMain(n);
+}
+function setSkuWindow(n,btn){
+  document.querySelectorAll('#sku-btns button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); renderSku(n);
+}
+function setFunnelWindow(n,btn){
+  document.querySelectorAll('#funnel-btns button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); renderFunnel(n);
+}
+
+renderMain(12); renderSku(12); renderFunnel(12);
+</script>
