@@ -7,61 +7,49 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
   :root {
-    --bg: #f8f7f4;
-    --bg2: #f0ede8;
-    --card: #ffffff;
-    --border: #e2ddd6;
-    --border2: #d4cfc8;
-    --text: #1a1917;
-    --text2: #6b6860;
-    --text3: #9e9b96;
-    --blue: #3266ad;
-    --pink: #D4537E;
-    --gray: #B4B2A9;
-    --green: #1D9E75;
-    --up: #1D9E75;
-    --dn: #D85A30;
-    --radius: 10px;
-    --radius-sm: 6px;
+    --bg: #f8f7f4; --bg2: #f0ede8; --card: #ffffff;
+    --border: #e2ddd6; --border2: #d4cfc8;
+    --text: #1a1917; --text2: #6b6860; --text3: #9e9b96;
+    --blue: #3266ad; --pink: #D4537E; --gray: #B4B2A9;
+    --green: #1D9E75; --up: #1D9E75; --dn: #D85A30;
+    --radius: 10px; --radius-sm: 6px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: 'Georgia', 'Times New Roman', serif; padding: 24px; min-height: 100vh; }
+  body { background: var(--bg); color: var(--text); font-family: 'Georgia','Times New Roman',serif; padding: 24px; min-height: 100vh; }
   .page-hdr { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
-  .page-title { font-size: 20px; font-weight: normal; letter-spacing: -0.02em; color: var(--text); }
+  .page-title { font-size: 20px; font-weight: normal; letter-spacing: -0.02em; }
   .page-title span { color: var(--blue); }
-  .page-sub { font-size: 12px; color: var(--text3); font-family: 'Helvetica Neue', Arial, sans-serif; }
+  .page-sub { font-size: 12px; color: var(--text3); font-family: 'Helvetica Neue',Arial,sans-serif; margin-top: 4px; }
   .pbtns { display: flex; gap: 4px; }
-  .pbtns button { font-size: 11px; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border2); background: transparent; color: var(--text2); cursor: pointer; transition: all 0.15s; font-family: 'Helvetica Neue', Arial, sans-serif; }
+  .pbtns button { font-size: 11px; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border2); background: transparent; color: var(--text2); cursor: pointer; transition: all 0.15s; font-family: 'Helvetica Neue',Arial,sans-serif; }
   .pbtns button:hover { background: var(--bg2); }
   .pbtns button.active { background: var(--text); color: #fff; border-color: var(--text); }
-  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 16px; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(140px,1fr)); gap: 10px; margin-bottom: 16px; }
   .kpi { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
-  .kpi-lbl { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; font-family: 'Helvetica Neue', Arial, sans-serif; }
+  .kpi-lbl { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; font-family: 'Helvetica Neue',Arial,sans-serif; }
   .kpi-val { font-size: 24px; color: var(--text); letter-spacing: -0.03em; line-height: 1.1; }
-  .kpi-sub { font-size: 11px; margin-top: 4px; font-family: 'Helvetica Neue', Arial, sans-serif; }
+  .kpi-sub { font-size: 11px; margin-top: 4px; font-family: 'Helvetica Neue',Arial,sans-serif; }
   .up { color: var(--up); } .dn { color: var(--dn); } .nt { color: var(--text3); }
   .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 14px; }
   .card-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
-  .card-title { font-size: 13px; color: var(--text); font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 500; }
-  .legend { display: flex; gap: 14px; font-size: 11px; color: var(--text2); flex-wrap: wrap; font-family: 'Helvetica Neue', Arial, sans-serif; }
+  .card-title { font-size: 13px; color: var(--text); font-family: 'Helvetica Neue',Arial,sans-serif; font-weight: 500; }
+  .legend { display: flex; gap: 14px; font-size: 11px; color: var(--text2); flex-wrap: wrap; font-family: 'Helvetica Neue',Arial,sans-serif; }
   .legend span { display: flex; align-items: center; gap: 5px; }
   .ldot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
-  .two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; margin-bottom: 14px; }
-  .funnel-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; font-family: 'Helvetica Neue', Arial, sans-serif; }
+  .two-col { display: grid; grid-template-columns: repeat(auto-fit,minmax(300px,1fr)); gap: 14px; margin-bottom: 14px; }
+  .funnel-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; font-family: 'Helvetica Neue',Arial,sans-serif; }
   .funnel-row:last-child { border-bottom: none; }
-  .fl { color: var(--text2); }
-  .fv { font-weight: 500; color: var(--text); }
+  .fl { color: var(--text2); } .fv { font-weight: 500; color: var(--text); }
   .fp { font-size: 11px; padding: 2px 8px; border-radius: 20px; }
   .fp-hi { background: #e1f5ee; color: #085041; }
   .fp-lo { background: #faece7; color: #712b13; }
   .fp-md { background: var(--bg2); color: var(--text2); }
-  .acq-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; font-family: 'Helvetica Neue', Arial, sans-serif; }
+  .acq-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; font-family: 'Helvetica Neue',Arial,sans-serif; }
   .acq-row:last-child { border-bottom: none; }
   .acq-lbl { color: var(--text2); }
   .acq-right { text-align: right; }
   .acq-val { font-weight: 500; color: var(--text); display: block; }
   .acq-sub { font-size: 11px; color: var(--text3); display: block; margin-top: 1px; }
-  .section-gap { height: 4px; }
 </style>
 </head>
 <body>
@@ -69,7 +57,7 @@
 <div class="page-hdr">
   <div>
     <div class="page-title">Covet <span>&</span> Mane — Weekly Metrics</div>
-    <div class="page-sub" style="margin-top:4px;">Updated through week of May 24, 2026</div>
+    <div class="page-sub">Updated through week of May 31, 2026</div>
   </div>
   <div class="pbtns" id="main-btns">
     <button onclick="setWindow(1,this)">This week</button>
@@ -96,9 +84,7 @@
       <span id="leg-ly"><span class="ldot" style="background:#B4B2A9;border-radius:50%;"></span>2025 Actual</span>
     </div>
   </div>
-  <div style="position:relative;width:100%;height:220px;">
-    <canvas id="revChart"></canvas>
-  </div>
+  <div style="position:relative;width:100%;height:220px;"><canvas id="revChart"></canvas></div>
 </div>
 
 <div class="two-col">
@@ -115,11 +101,8 @@
       <span><span class="ldot" style="background:#3266ad;"></span>2026</span>
       <span><span class="ldot" style="background:#D3D1C7;"></span>2025 LY</span>
     </div>
-    <div style="position:relative;width:100%;height:300px;">
-      <canvas id="skuChart"></canvas>
-    </div>
+    <div style="position:relative;width:100%;height:300px;"><canvas id="skuChart"></canvas></div>
   </div>
-
   <div class="card" style="margin-bottom:0;">
     <div class="card-hdr">
       <span class="card-title">Application funnel</span>
@@ -133,87 +116,67 @@
   </div>
 </div>
 
-<div class="section-gap"></div>
+<div style="height:4px;"></div>
 
 <div class="two-col">
   <div class="card" style="margin-bottom:0;">
     <div class="card-hdr"><span class="card-title">New customers added (7-day)</span></div>
-    <div style="position:relative;width:100%;height:160px;">
-      <canvas id="ncChart"></canvas>
-    </div>
+    <div style="position:relative;width:100%;height:160px;"><canvas id="ncChart"></canvas></div>
   </div>
   <div class="card" style="margin-bottom:0;">
-    <div class="card-title" style="margin-bottom:12px;">Customer orders — most recent week (May 24)</div>
+    <div class="card-title" style="margin-bottom:12px;">Customer orders — most recent week (May 31)</div>
     <div id="acq-detail"></div>
   </div>
 </div>
 
 <script>
-// ── DATA ── 20 weeks: Jan 6 → May 24 ──────────────────────────────────────
-const WEEKS = ['1/6','1/13','1/20','1/27','2/3','2/10','2/17','2/24','3/3','3/10','3/17','3/24','3/31','4/7','4/14','4/26','5/3','5/10','5/17','5/24'];
+// 21 weeks: Jan 6 → May 31
+const WEEKS=['1/6','1/13','1/20','1/27','2/3','2/10','2/17','2/24','3/3','3/10','3/17','3/24','3/31','4/7','4/14','4/26','5/3','5/10','5/17','5/24','5/31'];
+const R6 =[301281,210318,224827,209888,225935,228553,245745,242497,235703,250162,259558,240379,236495,248537,230077,246562,258964,230289,222169,183861,177630];
+const R5 =[325314,245634,212002,226553,283765,218592,234839,284209,274267,306052,250774,271029,280631,259823,286723,312218,271889,276591,281299,242498,247435];
+const R4 =[325314,233937,192729,188794,246752,190080,195699,247138,228556,255043,208978,235677,233859,216519,238936,260182,221429,223708,228424,198842,197948];
+const R14=[451,330,322,309,320,315,379,390,378,376,364,382,381,363,359,363,363,342,353,278,312];
+const R12=[513,351,295,322,341,353,290,351,346,356,352,325,362,372,340,386,386,347,360,298,329];
+const R7 =[44,20,65,41,23,41,36,18,17,114,56,69,101,71,70,31,50,41,62,56,45];
+const R70=[24,7,21,19,19,28,23,30,21,19,35,27,30,23,null,25,19,22,16,15,14];
+const R71=[353,312,291,273,273,314,340,348,339,295,320,333,334,324,null,322,286,309,287,258,285];
+const R72=[285,744,599,374,415,351,540,458,403,477,471,768,315,416,null,247,549,431,300,416,389];
+const R73=[759,694,775,769,705,677,655,635,637,677,739,619,647,701,null,695,746,690,645,675,583];
+const R74=[127,105,145,143,125,149,154,133,139,272,301,312,394,327,322,242,229,184,187,227,217];
+const R75=[15,11,20,23,16,33,32,31,34,24,27,29,34,32,35,25,28,27,24,26,27];
+const R76=[null,null,null,null,170,221,265,290,318,517,601,667,799,866,942,1037,1113,1145,1203,1284,1325];
+const R77=[null,null,null,null,24,48,58,70,82,97,114,127,139,157,176,202,224,232,214,259,269];
 
-// Row 6  – 2026 Net Sales Actual
-const R6  = [301281,210318,224827,209888,225935,228553,245745,242497,235703,250162,259558,240379,236495,248537,230077,246562,258964,230289,222169,183861];
-// Row 5  – 2026 Goal
-const R5  = [325314,245634,212002,226553,283765,218592,234839,284209,274267,306052,250774,271029,280631,259823,286723,312218,271889,276591,281299,242498];
-// Row 4  – 2025 Actual
-const R4  = [325314,233937,192729,188794,246752,190080,195699,247138,228556,255043,208978,235677,233859,216519,238936,260182,221429,223708,228424,198842];
-// Row 14 – 2026 Orders Actual
-const R14 = [451,330,322,309,320,315,379,390,378,376,364,382,381,363,359,363,363,342,353,278];
-// Row 12 – 2025 Orders
-const R12 = [513,351,295,322,341,353,290,351,346,356,352,325,362,372,340,386,386,347,360,298];
-// Row 67 – Customers Added 7-day
-const R7  = [44,20,65,41,23,41,36,18,17,114,56,69,101,71,70,31,50,41,62,56];
-// Row 70 – New Customer Orders
-const R70 = [24,7,21,19,19,28,23,30,21,19,35,27,30,23,null,25,19,22,16,15];
-// Row 71 – Returning Customer Orders
-const R71 = [353,312,291,273,273,314,340,348,339,295,320,333,334,324,null,322,286,309,287,258];
-// Row 72 – New Customer AOV
-const R72 = [285,744,599,374,415,351,540,458,403,477,471,768,315,416,null,247,549,431,300,416];
-// Row 73 – Returning Customer AOV
-const R73 = [759,694,775,769,705,677,655,635,637,677,739,619,647,701,null,695,746,690,645,675];
-// Row 74 – Customers Added 30-day
-const R74 = [127,105,145,143,125,149,154,133,139,272,301,312,394,327,322,242,229,184,187,227];
-// Row 75 – 30-day Placed Order
-const R75 = [15,11,20,23,16,33,32,31,34,24,27,29,34,32,35,25,28,27,24,26];
-// Row 76 – Customers Added YTD
-const R76 = [null,null,null,null,170,221,265,290,318,517,601,667,799,866,942,1037,1113,1145,1203,1284];
-// Row 77 – Customers Added YTD (Placed Order)
-const R77 = [null,null,null,null,24,48,58,70,82,97,114,127,139,157,176,202,224,232,214,259];
-
-// SKU data – v26 = 2026, vLY = 2025
-const SKUS = [
+const SKUS=[
   {name:'Coveted Weft',
-   v26:[128133,92556,101307,87318,104549,100025,105969,94784,107069,113309,104091,100528,113095,103771,98856,126929,123227,101330,100003,75900],
-   vLY:[88725,60935,55270,53545,80525,58130,53620,66240,72325,100513,83025,90945,91788,70575,68950,100344,79605,83035,80688,80492]},
+   v26:[128133,92556,101307,87318,104549,100025,105969,94784,107069,113309,104091,100528,113095,103771,98856,126929,123227,101330,100003,75900,70730],
+   vLY:[88725,60935,55270,53545,80525,58130,53620,66240,72325,100513,83025,90945,91788,70575,68950,100344,79605,83035,80688,80492,77165]},
   {name:'Cut Point Weft',
-   v26:[116542,87058,82283,82965,76259,87205,92651,92597,84831,84954,100093,93510,84542,85857,83342,77036,79274,85784,75649,66902],
-   vLY:[208623,134444,116839,102608,138664,107539,111387,151595,125144,134540,105264,122310,115376,109470,125295,119699,112413,100189,104080,72020]},
+   v26:[116542,87058,82283,82965,76259,87205,92651,92597,84831,84954,100093,93510,84542,85857,83342,77036,79274,85784,75649,66902,66404],
+   vLY:[208623,134444,116839,102608,138664,107539,111387,151595,125144,134540,105264,122310,115376,109470,125295,119699,112413,100189,104080,72020,80194]},
   {name:'Keratin Tip',
-   v26:[23083,14658,18475,13451,20039,15790,17763,22900,22104,23925,20004,18927,19514,25367,18623,20330,26027,25402,24136,20920],
-   vLY:[0,0,0,0,0,0,0,0,0,0,1745,0,1910,2755,2030,9305,6100,10870,9338,10316]},
+   v26:[23083,14658,18475,13451,20039,15790,17763,22900,22104,23925,20004,18927,19514,25367,18623,20330,26027,25402,24136,20920,17899],
+   vLY:[0,0,0,0,0,0,0,0,0,0,1745,0,1910,2755,2030,9305,6100,10870,9338,10316,8532]},
   {name:'Textures',
-   v26:[16820,10634,11780,19266,14130,16020,18854,21532,12449,18138,21396,16730,13319,19049,21803,10151,19248,9530,14892,9584],
-   vLY:[16770,14540,12920,21065,17250,10905,19960,17775,21710,11525,5730,8450,14430,15740,19170,20950,9200,17310,17870,16410]},
+   v26:[16820,10634,11780,19266,14130,16020,18854,21532,12449,18138,21396,16730,13319,19049,21803,10151,19248,9530,14892,9584,16304],
+   vLY:[16770,14540,12920,21065,17250,10905,19960,17775,21710,11525,5730,8450,14430,15740,19170,20950,9200,17310,17870,16410,17940]},
   {name:'Coveted Tape',
-   v26:[11747,2439,5974,3726,5400,5044,6523,5994,3772,4878,6114,5206,2906,7312,3580,5856,6420,5578,3016,4448],
-   vLY:[5442,13944,4434,5972,7826,6117,5944,4465,1448,2951,6856,6843,5909,8290,6294,2149,6668,6739,4687,8932]},
+   v26:[11747,2439,5974,3726,5400,5044,6523,5994,3772,4878,6114,5206,2906,7312,3580,5856,6420,5578,3016,4448,3656],
+   vLY:[5442,13944,4434,5972,7826,6117,5944,4465,1448,2951,6856,6843,5909,8290,6294,2149,6668,6739,4687,8932,5272]},
   {name:'Root Melt',
-   v26:[944,323,400,204,718,436,0,243,243,1005,248,1002,36,541,249,157,371,209,501,47],
-   vLY:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},
+   v26:[944,323,400,204,718,436,0,243,243,1005,248,1002,36,541,249,157,371,209,501,47,54],
+   vLY:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},
 ];
 
-const FUNNEL = {
-  views:     [828,620,698,706,501,526,586,609,565,597,546,505,530,485,500,424,505,385,396,442],
-  starts:    [279,208,243,244,170,230,254,275,275,292,260,239,242,224,226,189,252,159,168,188],
-  submitted: [125,105,117,123,79,132,157,153,166,148,158,126,135,145,139,110,98,92,99,106],
-  approved:  [90,9,81,47,11,81,81,99,49,35,31,34,86,76,75,27,36,37,49,60],
+const FUNNEL={
+  views:    [828,620,698,706,501,526,586,609,565,597,546,505,530,485,500,424,505,385,396,442,657],
+  starts:   [279,208,243,244,170,230,254,275,275,292,260,239,242,224,226,189,252,159,168,188,215],
+  submitted:[125,105,117,123,79,132,157,153,166,148,158,126,135,145,139,110,98,92,99,106,105],
+  approved: [90,9,81,47,11,81,81,99,49,35,31,34,86,76,75,27,36,37,49,60,45],
 };
 
-// ── HELPERS ───────────────────────────────────────────────────────────────
-const grd = {color:'rgba(0,0,0,0.06)'};
-let revChart, ncChart, skuChart;
-
+const grd={color:'rgba(0,0,0,0.06)'};
+let revChart,ncChart,skuChart;
 function sum(arr){return arr.reduce((a,b)=>a+(b||0),0);}
 function lastVal(arr){for(let i=arr.length-1;i>=0;i--){if(arr[i]!==null&&arr[i]!==undefined)return arr[i];}return null;}
 function fmtK(v){return v>=1000000?'$'+(v/1000000).toFixed(2)+'M':v>=1000?'$'+(v/1000).toFixed(0)+'k':'$'+Math.round(v);}
@@ -224,42 +187,37 @@ function setKpi(i,val,sub,c){
   const e=document.getElementById('ks'+i);
   e.textContent=sub; e.className='kpi-sub '+(c||'nt');
 }
+const YTD_ACT=sum(R6),YTD_LY=sum(R4);
 
-const YTD_ACT=sum(R6), YTD_LY=sum(R4);
-
-// ── MAIN RENDER ───────────────────────────────────────────────────────────
 function renderMain(n){
   const act=R6.slice(-n),goal=R5.slice(-n),ly=R4.slice(-n);
   const ord26=R14.slice(-n),ord25=R12.slice(-n),nc=R7.slice(-n),labs=WEEKS.slice(-n);
   const tA=sum(act),tG=sum(goal),tLY=sum(ly),tO=sum(ord26),tO25=sum(ord25);
-  const vsG=(tA-tG)/tG*100, vsLY=(tA-tLY)/tLY*100, aov=tA/tO, vsOrd=(tO-tO25)/tO25*100;
+  const vsG=(tA-tG)/tG*100,vsLY=(tA-tLY)/tLY*100,aov=tA/tO,vsOrd=(tO-tO25)/tO25*100;
   const ytdVsLY=(YTD_ACT-YTD_LY)/YTD_LY*100;
-
-  setKpi(0,fmtK(tA),n===1?'Week of May 24':n===4?'4-week total':'12-week total','nt');
+  setKpi(0,fmtK(tA),n===1?'Week of May 31':n===4?'4-week total':'12-week total','nt');
   setKpi(1,Math.round(vsG*10)/10+'%',(vsG>=0?'↑ ':'↓ ')+'$'+Math.abs(Math.round(tA-tG)).toLocaleString()+' vs goal',cls(vsG));
   setKpi(2,fmtPct(vsLY),(vsLY>=0?'↑ ':'↓ ')+'$'+Math.abs(Math.round(tA-tLY)).toLocaleString()+' vs LY',cls(vsLY));
   setKpi(3,tO.toLocaleString(),(vsOrd>=0?'↑ +':'↓ ')+Math.abs(Math.round(vsOrd*10)/10)+'% vs LY ('+tO25+')',cls(vsOrd));
   setKpi(4,'$'+Math.round(aov),'Goal: $775',aov>=775?'up':'nt');
   setKpi(5,fmtK(YTD_ACT),(ytdVsLY>=0?'↑ +':'↓ ')+Math.abs(Number(ytdVsLY.toFixed(1)))+'% vs LY',cls(ytdVsLY));
-
-  const tCfg={autoSkip:n>6,maxRotation:45,color:'#9e9b96',font:{size:10,family:'Helvetica Neue, Arial, sans-serif'}};
+  const tCfg={autoSkip:n>6,maxRotation:45,color:'#9e9b96',font:{size:10,family:'Helvetica Neue,Arial,sans-serif'}};
   if(revChart)revChart.destroy();
-
   if(n===1){
-    document.getElementById('leg-goal').innerHTML='<span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#D4537E;margin-right:5px;flex-shrink:0;"></span>2026 Goal';
-    document.getElementById('leg-ly').innerHTML='<span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#B4B2A9;margin-right:5px;flex-shrink:0;"></span>2025 Actual';
+    document.getElementById('leg-goal').innerHTML='<span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#D4537E;margin-right:5px;"></span>2026 Goal';
+    document.getElementById('leg-ly').innerHTML='<span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#B4B2A9;margin-right:5px;"></span>2025 Actual';
     revChart=new Chart(document.getElementById('revChart').getContext('2d'),{
       type:'bar',
       data:{labels:['2026 Actual','2026 Goal','2025 Actual'],
             datasets:[{data:[act[0],goal[0],ly[0]],backgroundColor:['#3266ad','#D4537E','#B4B2A9'],borderRadius:4,barPercentage:0.45}]},
       options:{responsive:true,maintainAspectRatio:false,
         plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' $'+Math.round(c.raw).toLocaleString()}}},
-        scales:{x:{grid:{display:false},ticks:{color:'#9e9b96',font:{size:12,family:'Helvetica Neue, Arial, sans-serif'}}},
-                y:{grid:grd,border:{display:false},ticks:{color:'#9e9b96',font:{size:11,family:'Helvetica Neue, Arial, sans-serif'},callback:v=>'$'+(v/1000).toFixed(0)+'k'}}}}
+        scales:{x:{grid:{display:false},ticks:{color:'#9e9b96',font:{size:12,family:'Helvetica Neue,Arial,sans-serif'}}},
+                y:{grid:grd,border:{display:false},ticks:{color:'#9e9b96',font:{size:11,family:'Helvetica Neue,Arial,sans-serif'},callback:v=>'$'+(v/1000).toFixed(0)+'k'}}}}
     });
   } else {
-    document.getElementById('leg-goal').innerHTML='<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#D4537E;margin-right:5px;flex-shrink:0;"></span>2026 Goal';
-    document.getElementById('leg-ly').innerHTML='<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#B4B2A9;margin-right:5px;flex-shrink:0;"></span>2025 Actual';
+    document.getElementById('leg-goal').innerHTML='<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#D4537E;margin-right:5px;"></span>2026 Goal';
+    document.getElementById('leg-ly').innerHTML='<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#B4B2A9;margin-right:5px;"></span>2025 Actual';
     revChart=new Chart(document.getElementById('revChart').getContext('2d'),{
       data:{labels:labs,datasets:[
         {type:'bar',label:'2026 actual',data:act,backgroundColor:'#3266ad',order:3,borderRadius:3},
@@ -269,21 +227,19 @@ function renderMain(n){
       options:{responsive:true,maintainAspectRatio:false,
         plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' $'+Math.round(c.raw).toLocaleString()}}},
         scales:{x:{grid:{display:false},ticks:tCfg},
-                y:{grid:grd,border:{display:false},ticks:{color:'#9e9b96',font:{size:11,family:'Helvetica Neue, Arial, sans-serif'},callback:v=>'$'+(v/1000).toFixed(0)+'k'}}}}
+                y:{grid:grd,border:{display:false},ticks:{color:'#9e9b96',font:{size:11,family:'Helvetica Neue,Arial,sans-serif'},callback:v=>'$'+(v/1000).toFixed(0)+'k'}}}}
     });
   }
-
   if(ncChart)ncChart.destroy();
   ncChart=new Chart(document.getElementById('ncChart').getContext('2d'),{
     type:'line',
     data:{labels:labs,datasets:[{label:'New customers',data:nc,borderColor:'#1D9E75',backgroundColor:'rgba(29,158,117,0.08)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#1D9E75',tension:0.4,fill:true}]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-      scales:{x:{grid:{display:false},ticks:tCfg},y:{grid:grd,border:{display:false},ticks:{color:'#9e9b96',font:{size:11,family:'Helvetica Neue, Arial, sans-serif'}},min:0}}}
+      scales:{x:{grid:{display:false},ticks:tCfg},y:{grid:grd,border:{display:false},ticks:{color:'#9e9b96',font:{size:11,family:'Helvetica Neue,Arial,sans-serif'}},min:0}}}
   });
   renderAcq();
 }
 
-// ── SKU RENDER ────────────────────────────────────────────────────────────
 function renderSku(n){
   const labels=SKUS.map(s=>s.name);
   const d26=SKUS.map(s=>sum(s.v26.slice(-n)));
@@ -298,14 +254,11 @@ function renderSku(n){
     ]},
     options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',
       plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' $'+Math.round(c.raw).toLocaleString()}}},
-      scales:{
-        x:{grid:grd,border:{display:false},ticks:{color:'#9e9b96',font:{size:10,family:'Helvetica Neue, Arial, sans-serif'},callback:v=>'$'+(v/1000).toFixed(0)+'k'}},
-        y:{grid:{display:false},ticks:{color:'#6b6860',font:{size:11,family:'Helvetica Neue, Arial, sans-serif'}}}
-      }}
+      scales:{x:{grid:grd,border:{display:false},ticks:{color:'#9e9b96',font:{size:10,family:'Helvetica Neue,Arial,sans-serif'},callback:v=>'$'+(v/1000).toFixed(0)+'k'}},
+              y:{grid:{display:false},ticks:{color:'#6b6860',font:{size:11,family:'Helvetica Neue,Arial,sans-serif'}}}}}
   });
 }
 
-// ── FUNNEL RENDER ─────────────────────────────────────────────────────────
 function renderFunnel(n){
   const views=sum(FUNNEL.views.slice(-n));
   const starts=sum(FUNNEL.starts.slice(-n));
@@ -330,16 +283,15 @@ function renderFunnel(n){
   </div>`).join('');
 }
 
-// ── ACQ RENDER ────────────────────────────────────────────────────────────
 function renderAcq(){
-  const i=19;
+  const i=20;
   const newOrd=R70[i]!==null?R70[i]:'—';
   const retOrd=R71[i]!==null?R71[i]:'—';
   const newAov=R72[i]!==null?'$'+R72[i]:'—';
   const retAov=R73[i]!==null?'$'+R73[i]:'—';
-  const c7=R7[i], c30=R74[i], c30p=R75[i];
+  const c7=R7[i],c30=R74[i],c30p=R75[i];
   const convPct=Math.round(c30p/c30*1000)/10;
-  const ytd=lastVal(R76), ytdP=lastVal(R77);
+  const ytd=lastVal(R76),ytdP=lastVal(R77);
   document.getElementById('acq-detail').innerHTML=[
     {label:'Customers added (7-day)',   val:c7,    sub:''},
     {label:'New customer orders',       val:newOrd,sub:'AOV '+newAov},
@@ -356,23 +308,11 @@ function renderAcq(){
   </div>`).join('');
 }
 
-// ── FILTER HANDLERS ───────────────────────────────────────────────────────
-function setWindow(n,btn){
-  document.querySelectorAll('#main-btns button').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active'); renderMain(n);
-}
-function setSkuWindow(n,btn){
-  document.querySelectorAll('#sku-btns button').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active'); renderSku(n);
-}
-function setFunnelWindow(n,btn){
-  document.querySelectorAll('#funnel-btns button').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active'); renderFunnel(n);
-}
+function setWindow(n,btn){document.querySelectorAll('#main-btns button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderMain(n);}
+function setSkuWindow(n,btn){document.querySelectorAll('#sku-btns button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderSku(n);}
+function setFunnelWindow(n,btn){document.querySelectorAll('#funnel-btns button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderFunnel(n);}
 
-// ── INIT ──────────────────────────────────────────────────────────────────
-renderMain(12); renderSku(12); renderFunnel(12);
+renderMain(12);renderSku(12);renderFunnel(12);
 </script>
 </body>
 </html>
-
